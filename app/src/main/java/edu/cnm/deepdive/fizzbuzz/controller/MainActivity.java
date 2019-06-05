@@ -37,6 +37,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
     implements View.OnTouchListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
+  String gameDataKey;
+  String gameTimeElapsedKey;
   private Random rng = new Random();
   private int value;
   private boolean running;
@@ -54,8 +56,6 @@ public class MainActivity extends AppCompatActivity
   private int gameDuration;
   private long gameTimerStart;
   private long gameTimeElapsed;
-  String gameDataKey;
-  String gameTimeElapsedKey;
 
   /**
    * Initializes this activity when created, and when restored after {@link #onDestroy()} (for
@@ -82,9 +82,10 @@ public class MainActivity extends AppCompatActivity
       gameTimeElapsed = savedInstanceState.getLong(gameTimeElapsedKey, 0);
     }
     if (game == null) {
-      game = new Game(timeLimit, numDigits, gameDuration);
+      initGame();
     }
   }
+
 
   /**
    * Updates timer(s) and UI to return display &amp; game to the pre-{@link #onPause()} state.
@@ -148,13 +149,13 @@ public class MainActivity extends AppCompatActivity
     pause.setVisible(running && !complete);
     return true;
   }
+
   /**
    * Handles user selection from the options menu.
    *
    * @param item option selected.
    * @return flag indicating that the selection was handled (or not).
    */
-
 
 
   @Override
@@ -164,9 +165,8 @@ public class MainActivity extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.reset:
         // TODO Combine invocations of Game constructor.
-        game = new Game(timeLimit, numDigits, gameDuration);
-        gameTimeElapsed = 0;
-        complete = false;
+        initGame();
+
         Toast.makeText(this, R.string.reset_message, Toast.LENGTH_LONG).show();
         pauseGame();
         break;
@@ -188,6 +188,12 @@ public class MainActivity extends AppCompatActivity
         break;
     }
     return handled;
+  }
+
+  private void initGame() {
+    game = new Game(timeLimit, numDigits, gameDuration);
+    complete = false;
+    gameTimeElapsed = 0;
   }
 
   private void showStats() {
@@ -230,8 +236,9 @@ public class MainActivity extends AppCompatActivity
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     readSettings();
     pauseGame();
-    game = new Game(timeLimit, numDigits, gameDuration);
+    initGame();
   }
+
 
   private void readSettings() {
     Resources res = getResources();
@@ -255,8 +262,7 @@ public class MainActivity extends AppCompatActivity
   private void resumeGame() {
     running = true;
     if (game == null) {
-      game = new Game(timeLimit, numDigits, gameDuration);
-      gameTimeElapsed = 0;
+      initGame();
     }
     updateValue();
     startGameTimer();
@@ -364,7 +370,8 @@ public class MainActivity extends AppCompatActivity
       complete = true;
       runOnUiThread(() -> {
         pauseGame();
-        Toast.makeText(MainActivity.this, "Time's up!", Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, getString(R.string.time_expired_message),
+            Toast.LENGTH_LONG).show();
         showStats();
       });
     }
@@ -378,6 +385,7 @@ public class MainActivity extends AppCompatActivity
 
     private float originX;
     private float originY;
+
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
