@@ -39,5 +39,7 @@
   <string name="correct_description">Correct!</string>
 
   <string name="incorrect_description">Incorrect!</string>
+  <string name="reset_message">Game reset!</string>
+  <string name="neither_marker">—</string>
 
 </resources>
