@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <!--TODO Add icons -->
 
@@ -10,6 +11,7 @@
     <androidx.preference.SeekBarPreference
       android:key="@string/time_limit_key"
       android:title="@string/time_limit_title"
+      app:icon="@drawable/number_display_limit"
       android:summary="@string/time_limit_summary"
       android:max="@integer/time_limit_max"
       android:defaultValue="@integer/time_limit_default"/>
@@ -17,6 +19,7 @@
     <androidx.preference.SeekBarPreference
       android:key="@string/num_digits_key"
       android:title="@string/num_digits_title"
+      app:icon="@drawable/max_digits"
       android:summary="@string/num_digits_summary"
       android:max="@integer/num_digits_max"
       android:defaultValue="@integer/num_digits_default"/>
@@ -29,6 +32,7 @@
     <androidx.preference.SeekBarPreference
       android:key="@string/game_time_key"
       android:title="@string/game_time_title"
+      app:icon="@drawable/game_time_limit"
       android:summary="@string/game_time_summary"
       android:max="@integer/game_time_max"
       android:defaultValue="@integer/game_time_default"/>
